@@ -45,22 +45,21 @@ if uploaded_file is not None:
     mencao_final = f.mencao_final(lista_de_mencoes)
     erros_lancamento = f.erros_lancamento(mencao_lancada=mencao_lancada, mencao_final=mencao_final)
     erros_lancamentos = pd.DataFrame(erros_lancamento.items(), columns=['Militar', 'Situação'])
+    tabela_mencoes_indices = f.criar_coluna_mencao_atividade(nova_tabela)
 
     col1, col2 = st.columns([0.3,0.7], vertical_alignment='top', border=True)
     with col1:
-        opcoes_selectbox = ["Verificar erros de lançamento", "Baixar nova planilha com a correção da menção final"]
+        opcoes_selectbox = ["Verificar erros de lançamento.", "Verificar meção geral e por atividade."]
         escolha = st.selectbox("Escolha uma opção abaixo",opcoes_selectbox, index=None)
 
     
 
     with col2:
-        if escolha == 'Verificar erros de lançamento':
+        if escolha == 'Verificar erros de lançamento.':
             st.dataframe(erros_lancamentos)
-
             
-            
-        if escolha == "Baixar nova planilha com a correção da menção final":
-            pass
+        if escolha == "Verificar meção geral e por atividade.":
+            st.dataframe(tabela_mencoes_indices)
     # except Exception as e:
     #     st.warning(f"Erro ao executar: '{e}'")
 else:
