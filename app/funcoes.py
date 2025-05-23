@@ -81,7 +81,7 @@ def determinar_mencao(idade,dicio_atividades,atividade,lem,segmento,indice):# re
     
 
 #criar colunas com as menções de cada índice.
-def criar_coluna_mencao_atividade(tabela):
+def criar_coluna_mencao_atividade(tabela): 
     #try:
         copia_tabela = tabela.copy(deep=True)
         atividades = ['CORRIDA', 'FLEXÃO', 'ABDOMINAL', 'BARRA']

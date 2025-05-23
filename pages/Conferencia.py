@@ -3,14 +3,6 @@ import pandas as pd
 from pathlib import Path
 from app.tabela_indice import *
 import app.funcoes as f
-
-
-
-def pega_excel(arquivo):
-    arquivo_excel = pd.ExcelFile(arquivo)#variável recebe todo o arquivo exel com suas abas
-    dfs = [pd.read_excel(arquivo_excel,sheet_name=sheet).assign(TAF=sheet) for sheet in arquivo_excel.sheet_names] #cria uma lista com as abas da planilha
-    tabela_tafs = pd.concat(dfs,ignore_index=True)#concatena as abas da planilha em uma só
-    return tabela_tafs
     
 
 ######### INICIANDO A CRIAÇÃO DA PÁGINA
@@ -23,22 +15,15 @@ st.set_page_config(
 # CSS personalizado para remover espaçamento e definir cor de fundo
 st.markdown(f.config_pagina, unsafe_allow_html=True)
 
-#solicitando o upload do arquivo
-st.markdown("##### CARREGUE A PLANILHA A SER ANALISADA, CLICANDO NO BOTÃO ABAIXO.")
-uploaded_file = st.file_uploader("")
-if uploaded_file is not None:
-    tabela_tafs = pega_excel(uploaded_file)#carrega a tabela para um dataframe
-    tabela_tafs.reset_index(inplace=True, drop=True)
-
-
-
-    #try:
-    tabela_tafs.drop(columns=['OBS','BI Publicado'], inplace=True) #limpando a tabela das colunas rolhas
+#pegando a tabela do session_state
+if 'tabela' in st.session_state:
+    tabela_tafs = st.session_state['tabela']
+    #Pegando os taf existentes na planilha
     options = tabela_tafs['TAF'].value_counts().index.sort_values()
     selection = st.pills("Selecione o TAF", options, selection_mode="multi", default=None)
     nova_tabela = tabela_tafs[tabela_tafs['TAF'].isin(selection)]
     nova_tabela.reset_index(inplace=True, drop=True)
-    
+
     #st.dataframe(nova_tabela)
     mencao_lancada = f.mencao_lancada(nova_tabela)
     lista_de_mencoes = f.lista_mencoes_pandas(nova_tabela)
@@ -52,7 +37,7 @@ if uploaded_file is not None:
         opcoes_selectbox = ["Verificar erros de lançamento.", "Verificar meção geral e por atividade."]
         escolha = st.selectbox("Escolha uma opção abaixo",opcoes_selectbox, index=None)
 
-    
+
 
     with col2:
         if escolha == 'Verificar erros de lançamento.':
@@ -60,11 +45,8 @@ if uploaded_file is not None:
             
         if escolha == "Verificar meção geral e por atividade.":
             st.dataframe(tabela_mencoes_indices)
-    # except Exception as e:
-    #     st.warning(f"Erro ao executar: '{e}'")
 else:
-        st.markdown("")
-
+    st.write('Carregue a planilha na página principal.')
 
 
         
@@ -78,5 +60,3 @@ else:
 # uploaded_file = arquivo
 # tabela_tafs = pega_excel(arquivo)
 # selection = ['1º TAF']
-
-

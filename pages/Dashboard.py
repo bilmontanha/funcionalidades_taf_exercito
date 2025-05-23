@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 import pandas as pd
 from pathlib import Path
 import streamlit as st
@@ -18,26 +16,12 @@ st.set_page_config(
 # CSS personalizado para remover espaçamento e definir cor de fundo
 st.markdown(f.config_pagina, unsafe_allow_html=True)
 
-@st.cache_data #Jogando a tabela para a memória, não precisa carregar toda vez
-def pega_excel(arquivo):
-    arquivo_excel = pd.ExcelFile(arquivo)#variável recebe todo o arquivo exel com suas abas
-    dfs = [pd.read_excel(arquivo_excel,sheet_name=sheet).assign(TAF=sheet) for sheet in arquivo_excel.sheet_names] #cria uma lista com as abas da planilha
-    tabela_tafs = pd.concat(dfs,ignore_index=True)#concatena as abas da planilha em uma só
-    return tabela_tafs
-
-st.markdown("#### CARREGUE A PLANILHA DO TAF CLICANDO NO BOTÃO ABAIXO.")
-uploaded_file = st.file_uploader("")
-if uploaded_file is not None:
-    tabela_tafs = pega_excel(uploaded_file)#carrega a tabela para um dataframe
-    tabela_tafs.reset_index(inplace=True, drop=True)
-    #limpando as colunas 'rolhas'
-    tabela_tafs.drop(columns=['OBS','BI Publicado'], inplace=True)
+#Puxando a tabela do state
+if 'tabela' in st.session_state:
+    tabela_tafs = st.session_state["tabela"]
 
     #TÍTULO
-    st.markdown("<h2 style='text-align: center;'>TAF - 10º BIL Mth</h2>", unsafe_allow_html=True)
-
-    
-   
+    st.markdown("<h2 style='text-align: center;'>ANALISE O TAF</h2>", unsafe_allow_html=True)
 
     col1, col2 = st.columns([0.3,0.7], vertical_alignment='top', border=True)
     #Montando o menu da esqueda
@@ -116,8 +100,7 @@ if uploaded_file is not None:
     if st.button('Mostrar Tabela filtrada'): #,on_click=None):
         tabela_final
 else:
-    st.write("")
-
+    st.write('Carregue o arquivo na página principal.')
 
 
 
