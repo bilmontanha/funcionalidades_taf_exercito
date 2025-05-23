@@ -29,7 +29,7 @@ if st.button("Vizualizar as Orientações para utilização do aplicativo", type
 6) A coluna 'OBS' terá lançamento livre para fins de controle interno.
 7) Nas atividades não realizadas pelos militares que fazem TAF Alternativo deverá ser lançado 'A', para evitar erros.
 8) Militares que não realizaram o TAF deverão receber 'NR' no lugar dos índices e da menção.
-9) Militares das outras LEM, que não a bélica, devem receber 'X' no lugar do índice da barra.
+9) Militares das outras LEM, que não a bélica, ou com 50 anos ou mais, devem receber 'X' no lugar do índice da barra.
 10) Sugestões de melhoria: carlos.2cmf@gmail.com
     ''')
 st.markdown("##### CARREGUE A PLANILHA A SER ANALISADA, CLICANDO NO BOTÃO ABAIXO.")

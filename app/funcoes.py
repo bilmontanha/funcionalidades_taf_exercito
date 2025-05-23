@@ -14,33 +14,39 @@ def determinar_mencao(idade,dicio_atividades,atividade,lem,segmento,indice):# re
        lem - retirado da coluna "LEM"
     '''
     #verificação de erro na coluna IDADE
-    if idade == None or isinstance(idade,str) or idade < 18:
+    if idade == None or isinstance(idade,str) or idade < 18 or str(idade) == 'nan':
         return 'erro idade'
-    if str(idade) == 'nan':
-        return 'erro idade'
+
     #verificação de erro na coluna SEGMENTO
-    if segmento not in ['M','F'] or segmento == None:
+    if segmento not in ['M','F'] or segmento == None or str(segmento) == 'nan':
         return 'erro no segmento'
+
     #verificação de erro na coluna LEM
-    if lem not in ['B','CT'] or lem == None:
+    if lem not in ['B','CT'] or lem == None or str(lem) == 'nan':
         return 'erro na LEM'
-    #verificação de erro na coluna da atividade selecionada
-    teste_indice = str(indice)
-    if lem == 'B':
-        if idade < 50:
-            if teste_indice == 'None' or teste_indice == 'nan':
-                return f'dado ausente em - {atividade}'
-    #verificação se foi lançado um 'NR' ou um "A" de TAF alternativo
+    
+    #verificação de erro no lançamento dos índices
+    teste_indice = str(indice) #caso esteja vazio, torna o espaço vago em na string 'nan'.
+    #Caso seja atividade de barra, já adianta 'X' para CT e B > 50
     if atividade == 'BARRA':
         if lem == 'CT':
             return 'X'
-
+        if lem == 'B':
+            if idade < 50:
+                if teste_indice == 'None' or teste_indice == 'nan':
+                    return f'dado ausente em - {atividade}'
+            else:
+                return 'X'
+    # Caso não seja BARRA e esteja vazio
+    if teste_indice == 'None' or teste_indice == 'nan':
+        return 'NR'
+    # Caso não seja barra e possua uma string lançada
     if isinstance(indice,str):
         if indice == 'NR' or indice == 'A':
             return indice
         else:
-            return f'erro no indice - {atividade}'
-    #indice = int(indice)
+            return f'dado ausente em - {atividade}'
+
 
 # determinar a faixa de idade
     if lem == 'B':
@@ -153,7 +159,7 @@ def lista_mencoes_pandas(tabela):
 def verifica_erros_lancamento(dicio):#Inserir a função lista_mencoes() dentro # retorna um dicionario com os erros.
     dicio_copia = dicio.copy()#só para não alterar o dicionário original
     dicionario = dict() 
-    #lista_verificacao = ['I','R','B','MB','E','S','NR','X','A']
+    #vai percorrer as listas por cada militar
     for k,v in dicio_copia.items():
         if 'erro idade' in v:
             dicionario[k] = 'erro no lançamento da idade'
@@ -192,9 +198,6 @@ def mencao_final(dicio):
     dicio_copia = dicio.copy()#só para não alterar o dicionário original
     resultado = dict()
     for k, v in dicio_copia.items():
-        if str(v) == 'nan':
-            resultado[k] = 'TAF não realizado'
-            continue
         if v.count('NR') >= 4:
             resultado[k] = 'TAF não realizado'
             continue
@@ -219,8 +222,17 @@ def mencao_final(dicio):
         if 'dado ausente em - BARRA' in v:
             resultado[k] = 'erro no lançamento da BARRA'
             continue
-        if 'NR' in v:
-            resultado[k] = 'NR'
+        if 'NR' in v[0]:
+            resultado[k] = 'Faltando o índice da CORRIDA'
+            continue
+        if 'NR' in v[1]:
+            resultado[k] = 'Faltando o índice da FLEXÃO'
+            continue
+        if 'NR' in v[2]:
+            resultado[k] = 'Faltando o índice do ABDOMINAL'
+            continue
+        if 'NR' in v[3]:
+            resultado[k] = 'Faltando o índice da BARRA'
             continue
         if 'A' in v:
             if 'I' in v:
@@ -304,19 +316,28 @@ def erros_lancamento(mencao_lancada, mencao_final):
             if mencao_final_copia[k] == 'TAF não realizado':
                 continue
             elif mencao_final_copia[k] == 'erro no segmento':
-                dicionario[k] = f'Existe um erro no lançamento da coluna "SEGMENTO". Dado ausente ou lançado errado (só aceita "M" ou "F")'
+                dicionario[k] = 'Existe um erro no lançamento da coluna "SEGMENTO". Dado ausente ou lançado errado (só aceita "M" ou "F")'
             elif mencao_final_copia[k] == 'erro na LEM':
-                dicionario[k] = f'Existe um erro no lançamento da coluna "LEM". Dado ausente ou lançado errado (só aceita "B" ou "CT")'
+                dicionario[k] = 'Existe um erro no lançamento da coluna "LEM". Dado ausente ou lançado errado (só aceita "B" ou "CT")'
             elif mencao_final_copia[k] == 'erro idade':
-                dicionario[k] = f'Existe um erro no lançamento da coluna "IDADE". Dado ausente ou lançado errado (só aceita números inteiros)'
+                dicionario[k] = 'Existe um erro no lançamento da coluna "IDADE". Dado ausente ou lançado errado (só aceita números inteiros)'
             elif mencao_final_copia[k] == 'dado ausente em - CORRIDA':
-                dicionario[k] = f'Existe um erro no lançamento da coluna "CORRIDA". Dado ausente ou lançado errado (só aceita número inteiro ou "NR" se o militar não fez o TAF). Caso o militar faça TAF Alternativo e não executa a corrida, coloque um "A" nessa coluna.'
+                dicionario[k] = 'Existe um erro no lançamento da coluna "CORRIDA". Dado ausente ou lançado errado (só aceita número inteiro ou "NR" se o militar não fez o TAF). Caso o militar faça TAF Alternativo e não executa a corrida, coloque um "A" nessa coluna.'
             elif mencao_final_copia[k] == 'dado ausente em - FLEXÃO':
-                dicionario[k] = f'Existe um erro no lançamento da coluna "FLEXÃO". Dado ausente ou lançado errado (só aceita número inteiro, "NR" se o militar não fez o TAF). Caso o militar faça TAF Alternativo e não executa a flexão, coloque um "A" nessa coluna.'
+                dicionario[k] = 'Existe um erro no lançamento da coluna "FLEXÃO". Dado ausente ou lançado errado (só aceita número inteiro, "NR" se o militar não fez o TAF). Caso o militar faça TAF Alternativo e não executa a flexão, coloque um "A" nessa coluna.'
             elif mencao_final_copia[k] == 'dado ausente em - ABDOMINAL':
-                dicionario[k] = f'Existe um erro no lançamento da coluna "ABDOMINAL". Dado ausente ou lançado errado (só aceita número inteiro, "NR" se o militar não fez o TAF. Caso o militar faça TAF Alternativo e não executa o abdominal, coloque um "A" nessa coluna.'
+                dicionario[k] = 'Existe um erro no lançamento da coluna "ABDOMINAL". Dado ausente ou lançado errado (só aceita número inteiro, "NR" se o militar não fez o TAF. Caso o militar faça TAF Alternativo e não executa o abdominal, coloque um "A" nessa coluna.'
             elif mencao_final_copia[k] == 'dado ausente em - BARRA':
-                dicionario[k] = f'Existe um erro no lançamento da coluna "BARRA". Dado ausente ou lançado errado (só aceita número inteiro, "NR" se o militar não fez o TAF. Caso o militar faça TAF Alternativo e não executa a barra, coloque um "A" nessa coluna.'
+                dicionario[k] = 'Existe um erro no lançamento da coluna "BARRA". Dado ausente ou lançado errado (só aceita número inteiro, "NR" se o militar não fez o TAF. Caso o militar faça TAF Alternativo e não executa a barra, coloque um "A" nessa coluna.'
+            elif mencao_final_copia[k] == 'Faltando o índice da CORRIDA':
+                dicionario[k] = 'Faltando o índice da CORRIDA'
+            elif mencao_final_copia[k] == 'Faltando o índice da FLEXÃO':
+                dicionario[k] = 'Faltando o índice da FLEXÃO'
+            elif mencao_final_copia[k] == 'Faltando o índice do ABDOMINAL':
+                dicionario[k] = 'Faltando o índice do ABDOMINAL'
+            elif mencao_final_copia[k] == 'Faltando o índice da BARRA':
+                dicionario[k] = 'Faltando o índice da BARRA'
+            #verifica se o a menção está sem lançamento
             elif str(v) == 'nan':
                 dicionario[k] = f'Não foi lançada menção para o militar. A menção correta a ser lançada é: {mencao_final_copia[k]}'
             else:        
@@ -571,8 +592,9 @@ if __name__=='__main__':
     from pathlib import Path
     from tabela_indice import *
     from pprint import pprint
+    import pandas as pd
     diretorio_atual = Path.cwd()
-    arquivo = diretorio_atual/'PLANILHA TAF.xlsx'
+    arquivo = 'pages/PLANILHA TAF(modelo).xlsx'
     arquivo_excel = pd.ExcelFile(arquivo)#variável recebe todo o arquivo exel com suas abas
     dfs = [pd.read_excel(arquivo_excel,sheet_name=sheet).assign(TAF=sheet) for sheet in arquivo_excel.sheet_names] #cria uma lista com as abas da planilha
     tabela_tafs = pd.concat(dfs,ignore_index=True)#concatena as abas da planilha em uma só
@@ -595,7 +617,8 @@ if __name__=='__main__':
     mencoes_lancadas = mencao_lancada(tabela_tafs)
 
     erros = erros_lancamento(mencoes_lancadas, mencao_final1)
-
+    a = 'X'
+    b = str(a)
 
 
 
