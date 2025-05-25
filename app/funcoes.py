@@ -155,42 +155,7 @@ def lista_mencoes_pandas(tabela):
         dicionario[f'{tabela.iloc[l]['P/G']} {tabela.iloc[l]['NOME']}'] = lista
     return dicionario
 
-#função para verificar quais militares estão com erro no lançamento
-def verifica_erros_lancamento(dicio):#Inserir a função lista_mencoes() dentro # retorna um dicionario com os erros.
-    dicio_copia = dicio.copy()#só para não alterar o dicionário original
-    dicionario = dict() 
-    #vai percorrer as listas por cada militar
-    for k,v in dicio_copia.items():
-        if 'erro idade' in v:
-            dicionario[k] = 'erro no lançamento da idade'
-            continue
-        if 'erro no segmento' in v:
-            dicionario[k] = 'erro no lançamento do segmento'
-            continue
-        if 'erro na LEM' in v:
-            dicionario[k] = 'erro no lançamento da LEM'
-            continue
-        if 'dado ausente em - CORRIDA' in v:
-            dicionario[k] = 'erro no lançamento da CORRIDA'
-            continue
-        if 'dado ausente em - FLEXAO' in v:
-            dicionario[k] = 'erro no lançamento da FLEXÃO'
-            continue
-        if 'dado ausente em - ABDOMINAL ' in v:
-            dicionario[k] = 'erro no lançamento do ABDOMINAL'
-            continue
-        if 'dado ausente em - BARRA' in v:
-            dicionario[k] = 'erro no lançamento da BARRA'
-            continue
-    return dicionario
 
-#função para limpar o dicionario da função 'lista_mencoes_pandas' excluindo os erros
-def limpa_mencao(dicio,dicio_erros):#Inserir a função mencoes_por_item() dentro + a função verifica_erros()
-    dicio_copia = dicio.copy() #só para não alterar o dicionário original
-    dicio_erros_copia = dicio_erros.copy()#só para não alterar o dicionário original
-    for k in dicio_erros_copia.keys():
-        dicio_copia.pop(k)
-    return dicio_copia
 
 #função para verificar o dicionário limpo e informar qual é a menção final do militar
 #Essa função ainda vai exibir os militares com erro
@@ -210,18 +175,6 @@ def mencao_final(dicio):
         if 'erro idade' in v:
             resultado[k] = 'erro idade'
             continue
-        if 'dado ausente em - CORRIDA' in v:
-            resultado[k] = 'erro no lançamento da CORRIDA'
-            continue
-        if 'dado ausente em - FLEXÃO' in v:
-            resultado[k] = 'erro no lançamento da FLEXÃO'
-            continue
-        if 'dado ausente em - ABDOMINAL' in v:
-            resultado[k] = 'erro no lançamento do ABDOMINAL'
-            continue
-        if 'dado ausente em - BARRA' in v:
-            resultado[k] = 'erro no lançamento da BARRA'
-            continue
         if 'NR' in v[0]:
             resultado[k] = 'Faltando o índice da CORRIDA'
             continue
@@ -233,40 +186,6 @@ def mencao_final(dicio):
             continue
         if 'NR' in v[3]:
             resultado[k] = 'Faltando o índice da BARRA'
-            continue
-        if 'A' in v:
-            if 'I' in v:
-                resultado[k] = 'I'
-                continue
-            else:
-                resultado[k] = 'R'
-                continue
-        if 'I' in v:
-            resultado[k] = 'I'
-            continue
-        if 'R' in v:
-            resultado[k] = 'R'
-            continue
-        if 'B' in v:
-            resultado[k] = 'B'
-            continue
-        if 'MB' in v:
-            resultado[k] = 'MB'
-            continue
-        if 'E' in v:
-            resultado[k] = 'E'
-            continue
-        if 'S' in v:
-            resultado[k] = 'S'
-    return resultado
-
-#Essa função devolve a menção final sem os erros
-def mencao_final_limpa(dicio): #menção final sem os militares com erros de lançamento
-    dicio_copia = dicio.copy()#só para não alterar o dicionário original
-    resultado = dict()         #mencao_final_limpa(lista_mencoes(aba))
-    for k, v in dicio_copia.items():
-        if 'NR' in v:
-            resultado[k] = 'NR'
             continue
         if 'A' in v:
             if 'I' in v:
@@ -321,14 +240,6 @@ def erros_lancamento(mencao_lancada, mencao_final):
                 dicionario[k] = 'Existe um erro no lançamento da coluna "LEM". Dado ausente ou lançado errado (só aceita "B" ou "CT")'
             elif mencao_final_copia[k] == 'erro idade':
                 dicionario[k] = 'Existe um erro no lançamento da coluna "IDADE". Dado ausente ou lançado errado (só aceita números inteiros)'
-            elif mencao_final_copia[k] == 'dado ausente em - CORRIDA':
-                dicionario[k] = 'Existe um erro no lançamento da coluna "CORRIDA". Dado ausente ou lançado errado (só aceita número inteiro ou "NR" se o militar não fez o TAF). Caso o militar faça TAF Alternativo e não executa a corrida, coloque um "A" nessa coluna.'
-            elif mencao_final_copia[k] == 'dado ausente em - FLEXÃO':
-                dicionario[k] = 'Existe um erro no lançamento da coluna "FLEXÃO". Dado ausente ou lançado errado (só aceita número inteiro, "NR" se o militar não fez o TAF). Caso o militar faça TAF Alternativo e não executa a flexão, coloque um "A" nessa coluna.'
-            elif mencao_final_copia[k] == 'dado ausente em - ABDOMINAL':
-                dicionario[k] = 'Existe um erro no lançamento da coluna "ABDOMINAL". Dado ausente ou lançado errado (só aceita número inteiro, "NR" se o militar não fez o TAF. Caso o militar faça TAF Alternativo e não executa o abdominal, coloque um "A" nessa coluna.'
-            elif mencao_final_copia[k] == 'dado ausente em - BARRA':
-                dicionario[k] = 'Existe um erro no lançamento da coluna "BARRA". Dado ausente ou lançado errado (só aceita número inteiro, "NR" se o militar não fez o TAF. Caso o militar faça TAF Alternativo e não executa a barra, coloque um "A" nessa coluna.'
             elif mencao_final_copia[k] == 'Faltando o índice da CORRIDA':
                 dicionario[k] = 'Faltando o índice da CORRIDA'
             elif mencao_final_copia[k] == 'Faltando o índice da FLEXÃO':
