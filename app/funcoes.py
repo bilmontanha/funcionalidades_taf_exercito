@@ -34,7 +34,7 @@ def determinar_mencao(idade,dicio_atividades,atividade,lem,segmento,indice):# re
         if lem == 'B':
             if idade < 50:
                 if teste_indice == 'None' or teste_indice == 'nan':
-                    return f'dado ausente em - {atividade}'
+                    return 'NR'
             else:
                 return 'X'
     # Caso não seja BARRA e esteja vazio
@@ -45,7 +45,7 @@ def determinar_mencao(idade,dicio_atividades,atividade,lem,segmento,indice):# re
         if indice == 'NR' or indice == 'A':
             return indice
         else:
-            return f'dado ausente em - {atividade}'
+            return 'NR'
 
 
 # determinar a faixa de idade
