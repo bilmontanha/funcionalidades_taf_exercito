@@ -87,7 +87,7 @@ def determinar_mencao(idade,dicio_atividades,atividade,lem,segmento,indice):# re
     
 
 #criar colunas com as menções de cada índice.
-def criar_coluna_mencao_atividade(tabela): 
+def tabela_mencao_atividade(tabela): 
     #try:
         copia_tabela = tabela.copy(deep=True)
         atividades = ['CORRIDA', 'FLEXÃO', 'ABDOMINAL', 'BARRA']
@@ -308,7 +308,7 @@ def grafico_pizza(tabela, info):
 
 ###### Gráfico de barra para representar a quantidade de militares na quantidade do indice alcançado na atividade
 def para_um(tabela, atividade):
-    tabela = tabela[~((tabela[atividade] == 'A') | (tabela[atividade].isna()) | (tabela[atividade] == 'X'))]# trata a tabela para tirar "A", nulo e 'X'
+    tabela = tabela[~((tabela[atividade] == 'A') | (tabela[atividade].isna()) | (tabela[atividade] == 'X') | (tabela[atividade] == 'NR'))]# trata a tabela para tirar "A", nulo, 'NR' e 'X'
     df_mencao_count = tabela[atividade].value_counts().reset_index()
     df_mencao_count.columns = [atividade, "count"]
     fig_bar_mencao = px.bar(
@@ -322,7 +322,7 @@ def para_um(tabela, atividade):
 
 ####Gráfico de disperção para uma atividade, levando em consideração a idade e o segmento
 def idade_seg_atv(tabela, atividade):
-    tabela = tabela[~((tabela[atividade] == 'A') | (tabela[atividade].isna()) | (tabela[atividade] == 'X'))] # trata a tabela para tirar "A", nulo e 'X'
+    tabela = tabela[~((tabela[atividade] == 'A') | (tabela[atividade].isna()) | (tabela[atividade] == 'X') | (tabela[atividade] == 'NR'))] # trata a tabela para tirar "A", nulo e 'X'
     try:
         cores_personalizadas = ['#377eb8','#e41a1c']
         media_atividade = tabela[atividade].mean()
@@ -342,7 +342,7 @@ def idade_seg_atv(tabela, atividade):
     )
         st.plotly_chart(fig_scatter)
     except:
-        st.write(f"Ocorreu um erro, provavelmente a coluna {atividade} está com algum valor lançado errado. Verifique a tabela abaixo e tente identificar e corrigir.")
+        st.write(f"Ocorreu um erro, provavelmente a coluna {atividade} está com algum valor lançado errado. Clique no botão 'Mostrar Tabela Filtrada' e tente identificar e corrigir.")
 
 
 
@@ -354,6 +354,8 @@ def graf_linhas_mencoes_por_taf(df):
     Linha das menções (I, R, B, MB, E) para 1º, 2º e 3º TAF.
     df precisa ter colunas 'TAF' e 'MENÇÃO'.
     """
+    df = df[~((df['MENÇÃO'] == 'A') | (df['MENÇÃO'].isna()) | (df['MENÇÃO'] == 'X') | (df['MENÇÃO'] == 'NR'))]
+    
     ordem = ['I', 'R', 'B', 'MB', 'E']
 
     # 1. Conta menções por TAF
@@ -380,7 +382,7 @@ def graf_linhas_mencoes_por_taf(df):
     fig.update_layout(xaxis_title='Menção',
                       yaxis_title='Quantidade',
                       legend_title_text='TAF')
-    return fig
+    return st.plotly_chart(fig)
 
 
 
@@ -504,8 +506,8 @@ if __name__=='__main__':
     from tabela_indice import *
     from pprint import pprint
     import pandas as pd
-    diretorio_atual = Path.cwd()
-    arquivo = 'pages/PLANILHA TAF(modelo).xlsx'
+    #diretorio_atual = Path.cwd()
+    arquivo = 'C:/Users/SCmt/Desktop/python/funcionalidades_taf_exercito/pages/PLANILHA TAF(modelo).xlsx'
     arquivo_excel = pd.ExcelFile(arquivo)#variável recebe todo o arquivo exel com suas abas
     dfs = [pd.read_excel(arquivo_excel,sheet_name=sheet).assign(TAF=sheet) for sheet in arquivo_excel.sheet_names] #cria uma lista com as abas da planilha
     tabela_tafs = pd.concat(dfs,ignore_index=True)#concatena as abas da planilha em uma só
@@ -515,12 +517,15 @@ if __name__=='__main__':
     #idade,dicio_atividades,atividade,lem,segmento,indice
    
     tabela_testes = tabela_tafs[tabela_tafs['TAF'].isin(['1º TAF 2024'])]
-    nova_tabela = criar_coluna_mencao_atividade(tabela_tafs)
+    nova_tabela = tabela_mencao_atividade(tabela_tafs)
     #nova_tabela.to_excel('tabela.xlsx', index=False)
 
+
+    t = nova_tabela[['M_CORRIDA']]
+    t.value_counts()
     tabela_tafs.value_counts().index
     taf = ['1º TAF', '2º TAF']
-    tabela1 = criar_coluna_mencao_atividade(tabela_testes)
+    tabela1 = tabela_mencao_atividade(tabela_testes)
     pprint(tabela1)
     tabela2 = lista_mencoes_pandas(tabela_tafs)
     #tabela1.to_excel('teste.xlsx')

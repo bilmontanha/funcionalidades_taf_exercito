@@ -30,7 +30,7 @@ if 'tabela' in st.session_state:
     mencao_final = f.mencao_final(lista_de_mencoes)
     erros_lancamento = f.erros_lancamento(mencao_lancada=mencao_lancada, mencao_final=mencao_final)
     erros_lancamentos = pd.DataFrame(erros_lancamento.items(), columns=['Militar', 'Situação'])
-    tabela_mencoes_indices = f.criar_coluna_mencao_atividade(nova_tabela)
+    tabela_mencoes_indices = f.tabela_mencao_atividade(nova_tabela)
 
     col1, col2 = st.columns([0.3,0.7], vertical_alignment='top', border=True)
     with col1:
