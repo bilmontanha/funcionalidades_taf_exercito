@@ -10,7 +10,7 @@ def determinar_mencao(idade,dicio_atividades,atividade,lem,segmento,indice):# re
     '''segmento - retirado da coluna 'SEGMENTO' da tabela
        idade - retirado da coluna "IDADE" da tabela
        atividade - nome da coluna da atividade na tabela
-       desempenho - item retirado da coluna da atividade
+       indice - item retirado da coluna da atividade
        lem - retirado da coluna "LEM"
     '''
     #verificação de erro na coluna IDADE

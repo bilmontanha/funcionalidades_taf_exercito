@@ -1,5 +1,3 @@
-import pandas as pd
-from pathlib import Path
 import streamlit as st
 import app.funcoes as f
 import plotly.express as px
@@ -21,10 +19,10 @@ if 'tabela' in st.session_state:
     tabela_tafs = st.session_state["tabela"]
 
     #TÍTULO
-    st.markdown("<h2 style='text-align: center;'>ANALISE O TAF</h2>", unsafe_allow_html=True)
+    st.markdown("<h2 style='text-align: center;'>Gráficos do TAF</h2>", unsafe_allow_html=True)
 
     col1, col2 = st.columns([0.3,0.7], vertical_alignment='top', border=True)
-    #Montando o menu da esqueda
+    #Montando o menu da esqueda (filtros em sequência)
     with col1:
         #Coletando as opções na coluna do TAF
         op_taf = tabela_tafs["TAF"].unique()
@@ -78,23 +76,25 @@ if 'tabela' in st.session_state:
     tabela_mencao_atividades = f.criar_coluna_mencao_atividade(tabela_final)
 
 
-
-    #Montando a coluna dos gráficos
+    
+        #Montando a coluna dos gráficos
     with col2:
-        #coletando as opções de atividade e menção
-        op_atv = tabela_tafs.columns[5:10]
-        atv_selecionados = st.pills("Selecione a opção para combinação dos gráficos", op_atv, selection_mode="multi")
-        #devolvendo boleanos para as variaveis corrida, flexão, abdominal, barra e mencao para poder utilizar nas funções de gráficos
-        corrida, flexao, abdominal, barra, mencao = f.devolve_boleanos(atv_selecionados)
-        atividades = (corrida, flexao, abdominal, barra, mencao)
-        #CORRIDA
-        if (False, False, False, False, True) == atividades:
-            st.pyplot(f.grafico_pizza(tabela_final, 'MENÇÃO'))
-        elif (False, False, False, False, False) == atividades:
-            st.write("Escolha uma ou mais opções.")
+        if taf_selecionados:
+            #coletando as opções de atividade e menção
+            op_atv = tabela_tafs.columns[5:10]
+            atv_selecionados = st.pills("Selecione a opção para combinação dos gráficos", op_atv, selection_mode="multi")
+            #devolvendo boleanos para as variaveis corrida, flexão, abdominal, barra e mencao para poder utilizar nas funções de gráficos
+            corrida, flexao, abdominal, barra, mencao = f.devolve_boleanos(atv_selecionados)
+            atividades = (corrida, flexao, abdominal, barra, mencao)
+            #CORRIDA
+            if (False, False, False, False, True) == atividades:
+                st.pyplot(f.grafico_pizza(tabela_final, 'MENÇÃO'))
+            elif (False, False, False, False, False) == atividades:
+                st.write("Escolha uma ou mais opções.")
+            else:
+                st.plotly_chart(f.grafico_linha(tabela=tabela_mencao_atividades, corrida=corrida, flexao=flexao, abdominal=abdominal, barra=barra, mencao=mencao))
         else:
-            st.plotly_chart(f.grafico_linha(tabela=tabela_mencao_atividades, corrida=corrida, flexao=flexao, abdominal=abdominal, barra=barra, mencao=mencao))
-        
+            st.markdown("#### Escolha  um ou mais TAF na barra lateral esquerda.")    
         
     #Mostrar tabela no final
     if st.button('Mostrar Tabela filtrada'): #,on_click=None):
