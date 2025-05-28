@@ -93,11 +93,16 @@ def tabela_mencao_atividade(tabela):
         atividades = ['CORRIDA', 'FLEXÃO', 'ABDOMINAL', 'BARRA']
         for atividade in atividades:
             copia_tabela[f"M_{atividade}"] = copia_tabela.apply(lambda row: determinar_mencao(row['IDADE'],dicio_atividades,atividade, row['LEM'], row['SEGMENTO'], row[atividade]), axis=1)
-        nova_tabela = copia_tabela[(['P/G', 'NOME','MENÇÃO','M_CORRIDA','M_FLEXÃO','M_ABDOMINAL','M_BARRA'])]
+        nova_tabela = copia_tabela[(['P/G', 'NOME','M_CORRIDA','M_FLEXÃO','M_ABDOMINAL','M_BARRA','MENÇÃO','TAF'])]
         return nova_tabela
     #except Exception as e:
         #return print(e)
 
+def tabela_mencao_atividade_limpa(tabela,atividade):
+    copia_tabela = tabela.copy(deep=True)
+    copia_tabela = copia_tabela[[atividade]]
+    copia_tabela = copia_tabela[~((copia_tabela[atividade] == 'NR') | (copia_tabela[atividade] == 'X') | (copia_tabela[atividade] == 'A') | (copia_tabela[atividade].isna()) | (copia_tabela[atividade].str.contains('erro', case=False, na=False)))]
+    return copia_tabela
 
 ##Devolvendo Boleanos para os variáveis corrida, flexão, abdominal, barra e menção
 def devolve_boleanos(lista):
@@ -508,7 +513,8 @@ if __name__=='__main__':
     import pandas as pd
     #diretorio_atual = Path.cwd()
     arquivo = 'C:/Users/SCmt/Desktop/python/funcionalidades_taf_exercito/pages/PLANILHA TAF(modelo).xlsx'
-    arquivo_excel = pd.ExcelFile(arquivo)#variável recebe todo o arquivo exel com suas abas
+    arquivo_casa = 'C:/Users/carlo/Desktop/python/funcionalidades_taf_exercito/pages/PLANILHA TAF(modelo).xlsx'
+    arquivo_excel = pd.ExcelFile(arquivo_casa)#variável recebe todo o arquivo exel com suas abas
     dfs = [pd.read_excel(arquivo_excel,sheet_name=sheet).assign(TAF=sheet) for sheet in arquivo_excel.sheet_names] #cria uma lista com as abas da planilha
     tabela_tafs = pd.concat(dfs,ignore_index=True)#concatena as abas da planilha em uma só
 
@@ -521,9 +527,12 @@ if __name__=='__main__':
     #nova_tabela.to_excel('tabela.xlsx', index=False)
 
 
-    t = nova_tabela[['M_CORRIDA']]
+    t = nova_tabela[['M_BARRA']]
     t.value_counts()
     tabela_tafs.value_counts().index
+
+    nt = tabela_mencao_atividade_limpa(nova_tabela,'M_FLEXÃO')
+    nt.value_counts()
     taf = ['1º TAF', '2º TAF']
     tabela1 = tabela_mencao_atividade(tabela_testes)
     pprint(tabela1)

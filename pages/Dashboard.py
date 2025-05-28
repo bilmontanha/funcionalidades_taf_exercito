@@ -101,20 +101,30 @@ if 'tabela' in st.session_state:
                 #só corrida
                 elif (True, False, False, False, False) == atividades:
                     f.idade_seg_atv(tabela_final, 'CORRIDA')
-                    tabela = tabela_men_atv[['M_CORRIDA']]
-                    f.grafico_pizza(tabela, 'M_CORRIDA')
+                    st.write('MENÇÕES POR ATIVIDADE - CORRIDA')
+                    tabela = f.tabela_mencao_atividade_limpa(tabela_men_atv,'M_CORRIDA')
+                    st.pyplot(f.grafico_pizza(tabela, 'M_CORRIDA'))
                 
                 #só flexão
                 elif (False, True, False, False, False) == atividades:
                     f.idade_seg_atv(tabela_final, 'FLEXÃO')
+                    st.write('MENÇÕES POR ATIVIDADE - FLEXÃO')
+                    tabela = f.tabela_mencao_atividade_limpa(tabela_men_atv,'M_FLEXÃO')
+                    st.pyplot(f.grafico_pizza(tabela, 'M_FLEXÃO'))
                 
                 # só abdominal            
                 elif (False, False, True, False, False) == atividades:
                     f.idade_seg_atv(tabela_final, 'ABDOMINAL')
+                    st.write('MENÇÕES POR ATIVIDADE - ABDOMINAL')
+                    tabela = f.tabela_mencao_atividade_limpa(tabela_men_atv,'M_ABDOMINAL')
+                    st.pyplot(f.grafico_pizza(tabela, 'M_ABDOMINAL'))
                 
                 # só barra
                 elif (False, False, False, True, False) == atividades:
                     f.idade_seg_atv(tabela_final, 'BARRA')
+                    st.write('MENÇÕES POR ATIVIDADE - BARRA')
+                    tabela = f.tabela_mencao_atividade_limpa(tabela_men_atv,'M_BARRA')
+                    st.pyplot(f.grafico_pizza(tabela, 'M_BARRA'))
 
                 # nenhuma opção marcada
                 elif (False, False, False, False, False) == atividades:
