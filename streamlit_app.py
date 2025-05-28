@@ -33,7 +33,7 @@ if st.button("Vizualizar as Orientações para utilização do aplicativo", type
 10) Sugestões de melhoria: carlos.2cmf@gmail.com
     ''')
 st.markdown("##### CARREGUE A PLANILHA A SER ANALISADA, CLICANDO NO BOTÃO ABAIXO.")
-uploaded_file = st.file_uploader("")
+uploaded_file = st.file_uploader("Carregue o arquivo", label_visibility="hidden")
 if uploaded_file is not None:
     tabela_tafs = pega_excel(uploaded_file)#carrega a tabela para um dataframe
     tabela_tafs.reset_index(inplace=True, drop=True)
@@ -43,7 +43,7 @@ if uploaded_file is not None:
     # Criando os "quadros clicáveis"
     col1, col2 = st.columns(2, vertical_alignment='center')
 
-    st.markdown("#### Selecione uma opção abaixo ou utilize o menu lateral:")
+    st.markdown("#### Selecione uma opção abaixo ou utilize o menu lateral.")
     with col1:
         st.markdown(
             """
