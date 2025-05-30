@@ -5,11 +5,6 @@ from app.tabela_indice import *
 
 
 ######### INICIANDO A CRIAÇÃO DA PÁGINA
-# CONFIGURANDO A PÁGINA
-st.set_page_config(
-     layout='wide',
-     page_title='Dashboard TAF',
- )
 
 # CSS personalizado para remover espaçamento e definir cor de fundo
 st.markdown(f.config_pagina, unsafe_allow_html=True)
@@ -138,7 +133,7 @@ if 'tabela' in st.session_state:
     if st.button('Mostrar Tabela filtrada'): #,on_click=None):
         tabela_final
 else:
-    st.write('Carregue o arquivo na página principal.')
+    st.markdown('# Carregue o arquivo na página de carregamento.')
 
 
 

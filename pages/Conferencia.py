@@ -1,16 +1,10 @@
 import streamlit as st
 import pandas as pd
-from pathlib import Path
 from app.tabela_indice import *
 import app.funcoes as f
     
 
-######### INICIANDO A CRIAÇÃO DA PÁGINA
-# CONFIGURANDO A PÁGINA
-st.set_page_config(
-     layout='wide',
-     page_title='Dash TAF - 10º BIL Mth',
- )
+
 
 # CSS personalizado para remover espaçamento e definir cor de fundo
 st.markdown(f.config_pagina, unsafe_allow_html=True)
@@ -46,7 +40,7 @@ if 'tabela' in st.session_state:
         if escolha == "Verificar meção geral e por atividade.":
             st.dataframe(tabela_mencoes_indices)
 else:
-    st.write('Carregue a planilha na página principal.')
+    st.markdown('# Carregue o arquivo na página de carregamento.')
 
 
         
