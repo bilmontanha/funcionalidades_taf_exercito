@@ -1,8 +1,5 @@
 import streamlit as st
 
-
-
-
 #criando sistema de navegação (coloca no sidebar, também)
 carregamento_page = st.Page('pages/Carregar_arquivo.py', title="Carregamento da planilha")
 conferencia_page = st.Page('pages/Conferencia.py', title='Verificação de erros de lançamento')
