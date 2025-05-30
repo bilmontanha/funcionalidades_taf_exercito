@@ -1,10 +1,7 @@
 import streamlit as st
 
 
-st.set_page_config(
-     layout='wide',
-     page_title='Dash TAF - 10º BIL Mth',
- )
+
 
 with open('pages/PLANILHA TAF(modelo).xlsx', 'rb') as file:
     arquivo_excel = file.read()
