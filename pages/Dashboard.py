@@ -91,6 +91,7 @@ if 'tabela' in st.session_state:
     
                 # só menção
                 if (False, False, False, False, True) == atividades:
+                    st.markdown("#### Gráfico da menção final")
                     st.pyplot(f.grafico_pizza(tabela_final, 'MENÇÃO'))
                 
                 #só corrida
@@ -130,7 +131,7 @@ if 'tabela' in st.session_state:
             st.markdown("#### Escolha  um ou mais TAF na barra lateral esquerda.")    
         
     #Mostrar tabela no final
-    if st.button('Mostrar Tabela filtrada'): #,on_click=None):
+    if st.button('MOSTRAR TABELA FILTRADA'): #,on_click=None):
         tabela_final
 else:
     st.markdown('# Carregue o arquivo na página de carregamento.')

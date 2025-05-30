@@ -13,7 +13,7 @@ st.markdown(f.config_pagina, unsafe_allow_html=True)
 
 st.title("Bem-vindo ao aplicativo de conferência de TAF do 10º BIL Mth.")
 
-if st.button("Vizualizar as Orientações para utilização do aplicativo", type='primary'):
+if st.button("Orientações e explicações sobre o aplicativo", type='primary'):
     with st.container():
         st.markdown('''1) Esse aplicativo analisa um modelo prederteminado de tabela do Excel (.xlsx). Caso não tenha o modelo, clique no botão 'Baixar planilha modelo' ao lado.  
 2) Não altere o nome das colunas e nem a estrutura da planilha.
@@ -24,7 +24,10 @@ if st.button("Vizualizar as Orientações para utilização do aplicativo", type
 7) Nas atividades não realizadas pelos militares que fazem TAF Alternativo deverá ser lançado 'A', para evitar erros.
 8) Militares que não realizaram o TAF deverão receber 'NR' no lugar dos índices e da menção.
 9) Militares das outras LEM, que não a bélica, ou com 50 anos ou mais, devem receber 'X' no lugar do índice da barra.
-10) Sugestões de melhoria: carlos.2cmf@gmail.com
+10) Na página do Dashboard, os filtros que aparecem na coluna da esquerda são retirados diretamente da planilha, então caso apareça algum nome errado
+deverá ser alterado diretamente na planilha. Caso apareça o valor 'nan' quer dizer que naquela coluna existem valores vazios, sem preenchimento. 
+Para verificar esses erros com mais facilidade, marque no filtro somente o nome errado ou o 'nan' e clique no botão abaixo "MOSTRAR TABELA FILTRADA".
+11) Sugestões de melhoria: carlos.2cmf@gmail.com
     ''')
 st.markdown("##### CARREGUE A PLANILHA A SER ANALISADA, CLICANDO NO BOTÃO ABAIXO.")
 uploaded_file = st.file_uploader("Carregue o arquivo", label_visibility='hidden')

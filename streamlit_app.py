@@ -14,5 +14,5 @@ st.set_page_config(
  )
 
 pg.run()
-# if 'tabela' in st.session_state:
-#     st.write(st.session_state.keys())
+
+
