@@ -28,7 +28,7 @@ if 'tabela' in st.session_state:
 
     col1, col2 = st.columns([0.3,0.7], vertical_alignment='top', border=True)
     with col1:
-        opcoes_selectbox = ["Verificar erros de lançamento.", "Verificar meção geral e por atividade."]
+        opcoes_selectbox = ["Verificar erros de lançamento.", "Conferir menção por atividade."]
         escolha = st.selectbox("Escolha uma opção abaixo",opcoes_selectbox, index=None)
 
 
@@ -37,10 +37,11 @@ if 'tabela' in st.session_state:
         if escolha == 'Verificar erros de lançamento.':
             st.dataframe(erros_lancamentos)
             
-        if escolha == "Verificar meção geral e por atividade.":
+        if escolha == "Conferir menção por atividade.":
             st.dataframe(tabela_mencoes_indices)
 else:
     st.markdown('# Carregue o arquivo na página de carregamento.')
+    st.page_link("pages/Carregar_arquivo.py", label="Página de Carregamento", icon=":material/upload_file:",use_container_width=False)
 
 
         

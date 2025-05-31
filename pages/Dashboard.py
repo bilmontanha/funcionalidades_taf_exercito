@@ -20,6 +20,7 @@ if 'tabela' in st.session_state:
     col1, col2 = st.columns([0.3,0.7], vertical_alignment='top', border=True)
     #Montando o menu da esqueda (filtros em sequência)
     with col1:
+        st.markdown("#### :material/filter_alt: FILTROS ")
         #Coletando as opções na coluna do TAF
         op_taf = tabela_tafs["TAF"].unique()
         #Botões e filtros para o TAF
@@ -135,6 +136,7 @@ if 'tabela' in st.session_state:
         tabela_final
 else:
     st.markdown('# Carregue o arquivo na página de carregamento.')
+    st.page_link("pages/Carregar_arquivo.py", label="Página de Carregamento", icon=":material/upload_file:")
 
 
 
