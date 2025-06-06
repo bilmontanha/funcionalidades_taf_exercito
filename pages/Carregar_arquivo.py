@@ -11,7 +11,7 @@ def pega_excel(arquivo):
 
 st.markdown(f.config_pagina, unsafe_allow_html=True)
 
-st.title("Bem-vindo ao aplicativo de conferência de TAF do 10º BIL Mth.")
+st.title("Bem-vindo ao aplicativo de conferência do Teste de Avaliação Física do EB.")
 
 if st.button("Orientações e explicações sobre o aplicativo", type='primary'):
     with st.container():

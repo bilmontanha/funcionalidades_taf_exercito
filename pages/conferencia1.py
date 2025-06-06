@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
-# import sys
-# sys.path.append('..')
+# import sys #somente para testes no computador local - depois desabilitar
+# sys.path.append('..') #somente para testes no computador local - depois desabilitar
 import app.funcoes as f
 from app.tabela_indice import * 
 
