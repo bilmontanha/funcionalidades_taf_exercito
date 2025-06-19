@@ -7,7 +7,7 @@ import app.funcoes as f
 
 
 # CSS personalizado para remover espaçamento e definir cor de fundo
-st.markdown(f.config_pagina, unsafe_allow_html=True)
+#st.markdown(f.config_pagina, unsafe_allow_html=True) # desabilitado por dificultar vizualização no celular
 
 #pegando a tabela do session_state
 if 'tabela' in st.session_state:

@@ -9,7 +9,7 @@ def pega_excel(arquivo):
     tabela_tafs = pd.concat(dfs,ignore_index=True)#concatena as abas da planilha em uma só
     return tabela_tafs
 
-st.markdown(f.config_pagina, unsafe_allow_html=True)
+#st.markdown(f.config_pagina, unsafe_allow_html=True) #algumas configurações para a página, desabilitado por dificular a visualização em celular
 
 st.title("Bem-vindo ao aplicativo de conferência do Teste de Avaliação Física do EB.")
 

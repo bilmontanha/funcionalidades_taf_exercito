@@ -7,7 +7,7 @@ from app.tabela_indice import *
 ######### INICIANDO A CRIAÇÃO DA PÁGINA
 
 # CSS personalizado para remover espaçamento e definir cor de fundo
-st.markdown(f.config_pagina, unsafe_allow_html=True)
+#st.markdown(f.config_pagina, unsafe_allow_html=True) desabilitado por dificultar a vizualização em celular
 
 #Puxando a tabela do state
 if 'tabela' in st.session_state:
